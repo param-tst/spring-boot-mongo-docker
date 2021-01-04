@@ -51,7 +51,6 @@ node {
     sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 sudo chmod -R 775 /home/ec2-user/deploy-project"
     sh "scp -o StrictHostKeyChecking=no ./docker-compose.yml  ec2-user@54.213.91.189:/home/ec2-user/deploy-project "
     sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 cd /home/ec2-user/deploy-project/"
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 pwd"
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 docker-compose  up -d"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 docker-compose  -f /home/ec2-user/deploy-project/docker-compose.yml up -d"
 }}
 }
