@@ -42,10 +42,13 @@ node {
 
        
     }
-     
+     stage("Replace build number in compose file"){												
+       sh "sed -i 's/BUILD_NUMBER/${buildNumber}/g' docker-compose.yml"											
+    }
      stage('container-launch') {
     sshagent(['docker-key']) {
-    
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 mkdir -p /home/ec2-user/deploy-project && chmod -r 775 /home/ec2-user/deploy-project"
+      sh "scp -o StrictHostKeyChecking=no ./docker-compose  ec2-user@15.206.91.239:/home/ec2-user/deploy-project && cd /home/ec2-user/deploy-project"
     sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 docker-compose  up -d"
 }}
 }
