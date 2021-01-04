@@ -44,7 +44,7 @@ node {
     }
      
      stage('container-launch') {
-    sshagent(['container-server']) {
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@34.214.50.110 docker run -d -p 8080:8080 --name paramContainer${buildNumber} paramveer1974/gagneza-group:${buildNumber}"
+    sshagent(['docker-key']) {
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 docker run -d -p 8080:8080 --name paramContainer${buildNumber} paramveer1974/gagneza-group:${buildNumber}"
 }}
 }
