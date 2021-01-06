@@ -1,0 +1,56 @@
+node {
+    def mvnHome
+    def buildNumber=BUILD_NUMBER
+    stage('Preparation') { // for display purposes
+        git branch:'patch-1',credentialsId: '5906d0e3-9816-404e-9a71-4769555aac72', url: 'https://github.com/param-tst/spring-boot-mongo-docker.git'
+        // Get the Maven tool.
+        // ** NOTE: This 'M3' Maven tool must be configured
+        // **       in the global configuration.
+        mvnHome = tool 'maven-latest'
+        
+
+    }
+    stage('Build') {
+        // Run the maven build
+        withEnv(["MVN_HOME=$mvnHome"]) {
+            if (isUnix()) {
+                sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
+            } else {
+                bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+            }
+        }
+    }
+     
+    
+  
+
+    stage('build-docker-image') {
+   
+             sh "docker build -t paramveer1974/gagneza-group:${buildNumber} ."
+    
+
+       
+    }
+    stage('upload-docker-image') {
+        withCredentials([string(credentialsId: 'docker_password', variable: 'docker_password')]) {
+        sh "docker login -u paramveer1974 -p ${docker_password}"
+        sh "docker push paramveer1974/gagneza-group:${buildNumber}"
+}
+          
+    
+    
+
+       
+    }
+     stage("Replace build number in compose file"){												
+       sh "sed -i 's/BUILD_NUMBER/${buildNumber}/g' docker-compose.yml"											
+    }
+     stage('container-launch') {
+    sshagent(['docker-key']) {
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 mkdir -p /home/ec2-user/deploy-project"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 sudo chmod -R 775 /home/ec2-user/deploy-project"
+    sh "scp -o StrictHostKeyChecking=no ./docker-compose.yml  ec2-user@54.213.91.189:/home/ec2-user/deploy-project "
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 cd /home/ec2-user/deploy-project/"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 docker-compose  -f /home/ec2-user/deploy-project/docker-compose.yml up -d"
+}}
+}
