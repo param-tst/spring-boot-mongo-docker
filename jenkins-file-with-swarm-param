@@ -47,10 +47,9 @@ node {
     }
      stage('container-launch') {
     sshagent(['docker-key']) {
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 mkdir -p /home/ec2-user/deploy-project"
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 sudo chmod -R 775 /home/ec2-user/deploy-project"
-    sh "scp -o StrictHostKeyChecking=no ./docker-compose.yml  ec2-user@54.213.91.189:/home/ec2-user/deploy-project "
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 cd /home/ec2-user/deploy-project/"
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@54.213.91.189 docker-compose  -f /home/ec2-user/deploy-project/docker-compose.yml up -d"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.43.218 mkdir -p /home/ec2-user/deploy-project"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.43.218 sudo chmod -R 775 /home/ec2-user/deploy-project"
+    sh "scp -o StrictHostKeyChecking=no ./docker-compose.yml  ec2-user@172.31.43.218:/home/ec2-user/deploy-project"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.43.218 docker stack deploy --compose-file /home/ec2-user/deploy-project/docker-compose-old.yml  springapp"
 }}
 }
