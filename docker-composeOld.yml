@@ -14,7 +14,7 @@ services:
     depends_on:
       - mongo
     networks:
-    - springappnetwork  
+    - paramoverlaynetwork  
     deploy:  # This will be considered only in docker swarm.
       replicas: 2
       update_config:
@@ -41,5 +41,5 @@ volumes:
     external: true
     
 networks:
-  springappnetwork:
+  paramoverlaynetwork:
     external: true
