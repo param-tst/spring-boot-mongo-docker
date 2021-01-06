@@ -49,7 +49,7 @@ node {
     sshagent(['docker-key']) {
     sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.43.218 mkdir -p /home/ec2-user/deploy-project"
     sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.43.218 sudo chmod -R 775 /home/ec2-user/deploy-project"
-    sh "scp -o StrictHostKeyChecking=no ./docker-compose-old.yml  ec2-user@172.31.43.218:/home/ec2-user/deploy-project"
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.43.218 docker stack deploy --compose-file /home/ec2-user/deploy-project/docker-compose-old.yml springapp"
+    sh "scp -o StrictHostKeyChecking=no ./docker-composeOld.yml  ec2-user@172.31.43.218:/home/ec2-user/deploy-project"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.43.218 docker stack deploy --compose-file /home/ec2-user/deploy-project/docker-composeOld.yml springapp"
 }}
 }
