@@ -47,9 +47,9 @@ node {
     }
      stage('container-launch') {
     sshagent(['docker-key']) {
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.35.118 mkdir -p /home/ec2-user/deploy-project"
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.35.118 sudo chmod -R 775 /home/ec2-user/deploy-project"
-    sh "scp -o StrictHostKeyChecking=no ./dynamic-claim-complete-deployment.yml  ec2-user@172.31.35.118:/home/ec2-user/deploy-project"
-    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.35.118 kubectl apply -f  /home/ec2-user/deploy-project/dynamic-claim-complete-deployment.yml"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.11.155 mkdir -p /home/ec2-user/deploy-project"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.11.155 sudo chmod -R 775 /home/ec2-user/deploy-project"
+    sh "scp -o StrictHostKeyChecking=no ./dynamic-claim-complete-deployment.yml  ec2-user@172.31.11.155:/home/ec2-user/deploy-project"
+    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.11.155 kubectl apply -f  /home/ec2-user/deploy-project/dynamic-claim-complete-deployment.yml"
 }}
 }
